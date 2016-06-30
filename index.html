@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<style>
+body { margin-top:1%; background-color: white; }
+#container {margin-left:7%; margin-right:7%; margin-top:2%;} 
+h2 { margin-top:1%; margin-bottom:1%; font-family:Arial; font-size: 1.5em; font-weight:600; } 
+input, textarea { line-height: 1.2em;     font-size:1em;     margin-top:0.5em;     margin-bottom:0.5em;     width:100%;} 
+</style>               
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">        
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>        
+<script src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    // Wait for Cordova to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+    // Cordova is ready
+    //
+    function onDeviceReady() {
+
+        
+    }
+    </script>
+
+<script type="text/javascript">
+        var watchID;
+        var geoLoc;                                                   
+        
+        function showLocation(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                get_add(latitude, longitude);
+        }
+        
+        function errorHandler(err) {
+          if(err.code == 1) {
+            alert("Error: Access is denied!");
+          }else if( err.code == 2) {
+            alert("Error: Position is unavailable!");
+          }
+        }
+
+        function getLoc(){
+           if(navigator.geolocation){
+              // timeout at 60000 milliseconds (60 seconds)
+              var options = {enableHighAccuracy:true,maximumAge:30000,timeout:27000};
+              geoLoc = navigator.geolocation;
+
+              //watchID = geoLoc.watchPosition(showLocation, errorHandler, options);
+              watchID = geoLoc.getCurrentPosition(showLocation, errorHandler, options);
+                            
+           }else{
+              alert("Sorry, browser does not support geolocation!");
+           }
+        }
+
+        function get_add(latitude, longitude){
+                $.get("http://maps.google.com/maps/api/geocode/xml?latlng=" + latitude + "," + longitude + "&sensor=false", function(data){
+                        $(data).find("formatted_address").each(function(){
+                                var unitData = $(this).text();
+                                $('input[name=gps]').fadeOut();
+                                $('input[name=gps]').val(unitData);
+                                $('input[name=gps]').fadeIn();
+                                return false;
+                        });                  
+                });
+        }
+    function postToGoogle(){
+        $('#submit').fadeOut();
+    
+        var region = $('#region').val();
+        var address = $('#address').val();
+        var comment = $('#comment').val();
+        if ( (region !== "") && (address !== "") ) {
+            jQuery.ajax({
+                url: "https://docs.google.com/forms/d/184WwDtA8IdHr7lYv0Zu5YSHe9Gi0pTrW7AFos5Y5FEA/formResponse",
+                data: {"entry.1109139907" : region, "entry.2116315127" : address, "entry.2096089748": comment},
+                type: "POST",
+                dataType: "xml",
+                statusCode: {
+                    0: function (){
+                        //Success message
+                        $('#comment').val("");
+                        $('#submit').fadeIn('slow');
+                        $("#address" ).focus();                        
+                    },
+                    200: function (){
+                        //Success message
+                        $('#comment').val("");
+                        $('#submit').fadeIn('slow');
+                        $("#address" ).focus();                        
+                        
+                    }
+                }
+            });
+        }
+        else {
+            //Error message
+        }
+    }
+//getLoc();
+//var i = setInterval(getLoc, 30000);
+//$("#address" ).focusin(getLoc());
+
+//$( "#address" ).focusin(function() {
+//  getLoc();
+//});
+
+$(document).ready(function() {
+
+/*
+navigator.notification.alert(
+    'You are the winner!',  // message
+    alertDismissed,         // callback
+    'Game Over',            // title
+    'Done'                  // buttonName
+);
+*/        
+
+
+    getLoc();
+    
+  $("#address").focus(function() {
+    getLoc();
+    
+  });
+
+});
+
+</script>
+
+</head>
+<html>
+  <body>
+    <div id=container><h2>HOP SEARCH</h2>    
+      <form id="callus" target="_self" onsubmit="" action="javascript: postToGoogle()">   
+        <input id="region" type="text" name="region" placeholder="Wijk">   
+        <input id="address" type="text" name="address" placeholder="Straatnaam en nummer">   
+        <input id="gps" type="text" name="gps" disabled="true">   
+<textarea id="comment" name="comment" style="width:100%; height:4.5em; font-size:1.1em;" placeholder="Opmerkingen"></textarea>     
+        <input id=submit type="submit" value="Opslaan"/>   
+      </form>    
+      <div id="output">
+      </div>
+    </div>         
+  </body>
+</html>
