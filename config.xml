@@ -2,13 +2,14 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap= "http://phonegap.com/ns/1.0"
 id="nl.deville-internet.app"
 version="1.0.0">
-        <name>Testapp</name>
-        <description>Een testapp om te testen wat allemaal mogelijk is</description>
+        <name>Push testing</name>
+        <description>Een testapp om push te testen</description>
         <author email="info@deville-internet.nl" href="http://www.deville-internet.nl">de Ville Internet</author>
 	<!-- We'll include the Cordova plugins -->
 	<gap:plugin name="org.apache.cordova.geolocation"/>
 	<gap:plugin name="org.apache.cordova.dialogs"/>
 	<gap:plugin name="com.pushapps.phonegap"/>
+	<plugin name="phonegap-plugin-push" src="npm"></plugin>
 
 
 	<feature name="http://api.phonegap.com/1.0/network"/>
@@ -52,7 +53,7 @@ version="1.0.0">
               <icon src="res/icon/android/icon.png" density="mdpi" />
               <icon src="res/icon/android/icon.png" density="hdpi" />
               <icon src="res/icon/android/icon.png" density="xhdpi" />
-	      <preference name="android-minSdkVersion" value="10" />
+	      <preference name="android-minSdkVersion" value="14" />
          </platform>
 
 	<preference name="orientation" value="portrait" />
