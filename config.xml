@@ -6,9 +6,6 @@ version="1.0.0">
         <description>Een testapp om push te testen</description>
         <author email="info@deville-internet.nl" href="http://www.deville-internet.nl">de Ville Internet</author>
 	<!-- We'll include the Cordova plugins -->
-	<gap:plugin name="org.apache.cordova.geolocation"/>
-	<gap:plugin name="org.apache.cordova.dialogs"/>
-	<gap:plugin name="com.pushapps.phonegap"/>
 	<plugin name="phonegap-plugin-push" source="npm"></plugin>
 
 
