@@ -9,7 +9,7 @@ version="1.0.0">
 	<gap:plugin name="org.apache.cordova.geolocation"/>
 	<gap:plugin name="org.apache.cordova.dialogs"/>
 	<gap:plugin name="com.pushapps.phonegap"/>
-	<plugin name="phonegap-plugin-push" src="npm"></plugin>
+	<gap:plugin name="phonegap-plugin-push" src="npm"></gap:plugin>
 
 
 	<feature name="http://api.phonegap.com/1.0/network"/>
